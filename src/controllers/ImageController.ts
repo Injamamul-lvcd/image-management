@@ -1,9 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import imageService from '../services/ImageService';
 
-/**
- * Controller for image management endpoints
- */
+
 class ImageController {
   /**
    * Upload a new image
@@ -26,7 +24,6 @@ class ImageController {
         return;
       }
 
-      // Call service to upload image
       const result = await imageService.uploadImage(userId, file);
 
       res.status(201).json({
@@ -48,7 +45,6 @@ class ImageController {
    */
   async updateImage(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      // userId is attached by authentication middleware
       const userId = req.userId!;
       const imageId = parseInt(req.params.id, 10);
       const file = req.file;
@@ -69,7 +65,6 @@ class ImageController {
         return;
       }
 
-      // Call service to update image
       const result = await imageService.updateImage(userId, imageId, file);
 
       res.status(200).json({
@@ -91,7 +86,6 @@ class ImageController {
    */
   async deleteImage(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      // userId is attached by authentication middleware
       const userId = req.userId!;
       const imageId = parseInt(req.params.id, 10);
 
@@ -103,7 +97,6 @@ class ImageController {
         return;
       }
 
-      // Call service to delete image
       await imageService.deleteImage(userId, imageId);
 
       res.status(200).json({
@@ -124,10 +117,8 @@ class ImageController {
    */
   async getUserImages(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      // userId is attached by authentication middleware
       const userId = req.userId!;
 
-      // Call service to get user's images
       const result = await imageService.getUserImages(userId);
 
       res.status(200).json({

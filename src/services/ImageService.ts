@@ -3,7 +3,6 @@ import { AuthorizationError, NotFoundError, ValidationError } from '../models/er
 import { ImageDto } from '../models/interfaces/Image.interface';
 import { CreateImageDto, UpdateImageDto } from '../models/dto/Image.dto';
 import * as fs from 'fs/promises';
-import * as path from 'path';
 
 export interface IImageService {
   uploadImage(userId: number, file: Express.Multer.File): Promise<ImageDto>;

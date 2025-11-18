@@ -1,16 +1,15 @@
 import { Router } from 'express';
-import authController from '../controllers/AuthController';
+import authController from '../controllers/UserController';
 import { validateRegistration, validateLogin } from '../middleware/validation.middleware';
 
 const router = Router();
 
 /**
  * @swagger
- * /api/auth/register:
+ * /api/v1/users/register:
  *   post:
  *     summary: Register a new user
- *     description: Create a new user account with email and password
- *     tags: [Authentication]
+ *     tags: [Users]
  *     requestBody:
  *       required: true
  *       content:
@@ -25,13 +24,7 @@ const router = Router();
  *             schema:
  *               $ref: '#/components/schemas/RegisterResponse'
  *       400:
- *         description: Validation error or email already exists
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
- *       500:
- *         description: Internal server error
+ *         description: Bad request
  *         content:
  *           application/json:
  *             schema:
@@ -41,11 +34,10 @@ router.post('/register', validateRegistration, authController.register.bind(auth
 
 /**
  * @swagger
- * /api/auth/login:
+ * /api/v1/users/login:
  *   post:
  *     summary: Login user
- *     description: Authenticate user with email and password, returns JWT token
- *     tags: [Authentication]
+ *     tags: [Users]
  *     requestBody:
  *       required: true
  *       content:
@@ -61,18 +53,6 @@ router.post('/register', validateRegistration, authController.register.bind(auth
  *               $ref: '#/components/schemas/LoginResponse'
  *       401:
  *         description: Invalid credentials
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
- *       400:
- *         description: Validation error
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
- *       500:
- *         description: Internal server error
  *         content:
  *           application/json:
  *             schema:

@@ -5,7 +5,7 @@ import path from 'path';
 import swaggerUi from 'swagger-ui-express';
 import { syncDatabase } from './config/database';
 import swaggerSpec from './config/swagger';
-import authRoutes from './routes/auth.routes';
+import userRoutes from './routes/user.routes';
 import imageRoutes from './routes/image.routes';
 import { errorHandler, notFoundHandler } from './middleware/error.middleware';
 
@@ -37,8 +37,8 @@ app.get('/health', (_req, res) => {
 });
 
 // Mount routes
-app.use('/api/auth', authRoutes);
-app.use('/api/images', imageRoutes);
+app.use('/api/v1/users', userRoutes);
+app.use('/api/v1/images', imageRoutes);
 
 // 404 handler for undefined routes
 app.use(notFoundHandler);

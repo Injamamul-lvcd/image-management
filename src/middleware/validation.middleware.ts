@@ -1,60 +1,78 @@
-import { body, validationResult } from 'express-validator';
 import { Request, Response, NextFunction } from 'express';
 
 /**
- * Middleware to check validation results and return errors if any
+ * Simple email validation
  */
-export const handleValidationErrors = (
+const isValidEmail = (email: string): boolean => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+};
+
+/**
+ * Validation middleware for user registration
+ */
+export const validateRegistration = (
   req: Request,
   res: Response,
   next: NextFunction
 ): void => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
+  const { email, password, fullName } = req.body;
+
+  if (!email || !password || !fullName) {
     res.status(400).json({
       success: false,
-      message: 'Validation failed',
-      errors: errors.array().map((err) => ({
-        field: err.type === 'field' ? err.path : 'unknown',
-        message: err.msg,
-      })),
+      message: 'Email, password, and fullName are required',
     });
     return;
   }
+
+  if (!isValidEmail(email)) {
+    res.status(400).json({
+      success: false,
+      message: 'Invalid email format',
+    });
+    return;
+  }
+
+  if (password.length < 6) {
+    res.status(400).json({
+      success: false,
+      message: 'Password must be at least 6 characters long',
+    });
+    return;
+  }
+
   next();
 };
 
 /**
- * Validation rules for user registration
+ * Validation middleware for user login
  */
-export const validateRegistration = [
-  body('email')
-    .isEmail()
-    .withMessage('Must be a valid email address')
-    .normalizeEmail(),
-  body('password')
-    .isLength({ min: 6 })
-    .withMessage('Password must be at least 6 characters long')
-    .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/)
-    .withMessage(
-      'Password must contain at least one uppercase letter, one lowercase letter, and one number'
-    ),
-  handleValidationErrors,
-];
+export const validateLogin = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): void => {
+  const { email, password } = req.body;
 
-/**
- * Validation rules for user login
- */
-export const validateLogin = [
-  body('email')
-    .isEmail()
-    .withMessage('Must be a valid email address')
-    .normalizeEmail(),
-  body('password')
-    .notEmpty()
-    .withMessage('Password is required'),
-  handleValidationErrors,
-];
+  if (!email || !password) {
+    res.status(400).json({
+      success: false,
+      message: 'Email and password are required',
+    });
+    return;
+  }
+
+  if (!isValidEmail(email)) {
+    res.status(400).json({
+      success: false,
+      message: 'Invalid email format',
+    });
+    return;
+  }
+
+  next();
+};
 
 /**
  * Validation middleware for image upload

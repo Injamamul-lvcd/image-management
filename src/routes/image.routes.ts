@@ -8,10 +8,9 @@ const router = Router();
 
 /**
  * @swagger
- * /api/images:
+ * /api/v1/images:
  *   post:
- *     summary: Upload a new image
- *     description: Upload an image file (authenticated users only)
+ *     summary: Upload an image
  *     tags: [Images]
  *     security:
  *       - bearerAuth: []
@@ -21,13 +20,11 @@ const router = Router();
  *         multipart/form-data:
  *           schema:
  *             type: object
- *             required:
- *               - image
  *             properties:
  *               image:
  *                 type: string
  *                 format: binary
- *                 description: Image file (jpeg, jpg, png, gif)
+ *                 description: Image file to upload
  *     responses:
  *       201:
  *         description: Image uploaded successfully
@@ -35,20 +32,8 @@ const router = Router();
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/ImageResponse'
- *       400:
- *         description: Validation error or invalid file type
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
  *       401:
- *         description: Unauthorized - missing or invalid token
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
- *       500:
- *         description: Internal server error
+ *         description: Unauthorized
  *         content:
  *           application/json:
  *             schema:
@@ -64,10 +49,9 @@ router.post(
 
 /**
  * @swagger
- * /api/images/{id}:
+ * /api/v1/images/{id}:
  *   put:
- *     summary: Update an existing image
- *     description: Replace an existing image with a new file (requires authentication and ownership)
+ *     summary: Update an image
  *     tags: [Images]
  *     security:
  *       - bearerAuth: []
@@ -84,13 +68,11 @@ router.post(
  *         multipart/form-data:
  *           schema:
  *             type: object
- *             required:
- *               - image
  *             properties:
  *               image:
  *                 type: string
  *                 format: binary
- *                 description: New image file (jpeg, jpg, png, gif)
+ *                 description: New image file to upload
  *     responses:
  *       200:
  *         description: Image updated successfully
@@ -98,32 +80,14 @@ router.post(
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/ImageResponse'
- *       400:
- *         description: Validation error or invalid file type
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
  *       401:
- *         description: Unauthorized - missing or invalid token
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
- *       403:
- *         description: Forbidden - user does not own this image
+ *         description: Unauthorized
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  *       404:
  *         description: Image not found
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
- *       500:
- *         description: Internal server error
  *         content:
  *           application/json:
  *             schema:
@@ -139,10 +103,9 @@ router.put(
 
 /**
  * @swagger
- * /api/images/{id}:
+ * /api/v1/images/{id}:
  *   delete:
  *     summary: Delete an image
- *     description: Delete an image file and database record (requires authentication and ownership)
  *     tags: [Images]
  *     security:
  *       - bearerAuth: []
@@ -168,25 +131,13 @@ router.put(
  *                   type: string
  *                   example: Image deleted successfully
  *       401:
- *         description: Unauthorized - missing or invalid token
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
- *       403:
- *         description: Forbidden - user does not own this image
+ *         description: Unauthorized
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  *       404:
  *         description: Image not found
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
- *       500:
- *         description: Internal server error
  *         content:
  *           application/json:
  *             schema:
@@ -200,10 +151,9 @@ router.delete(
 
 /**
  * @swagger
- * /api/images:
+ * /api/v1/images:
  *   get:
- *     summary: Get all user images
- *     description: Retrieve all images uploaded by the authenticated user
+ *     summary: Get user's images
  *     tags: [Images]
  *     security:
  *       - bearerAuth: []
@@ -215,13 +165,7 @@ router.delete(
  *             schema:
  *               $ref: '#/components/schemas/ImagesListResponse'
  *       401:
- *         description: Unauthorized - missing or invalid token
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
- *       500:
- *         description: Internal server error
+ *         description: Unauthorized
  *         content:
  *           application/json:
  *             schema:

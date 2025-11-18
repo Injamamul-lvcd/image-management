@@ -4,6 +4,6 @@ export {
   validateRegistration,
   validateLogin,
   validateImageUpload,
-  handleValidationErrors,
+  //handleValidationErrors,
 } from './validation.middleware';
 export { errorHandler, notFoundHandler } from './error.middleware';

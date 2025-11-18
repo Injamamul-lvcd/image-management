@@ -21,6 +21,16 @@ const swaggerDefinition: SwaggerDefinition = {
       description: 'Local server',
     },
   ],
+  tags: [
+    {
+      name: 'Users',
+      description: 'User authentication and management endpoints'
+    },
+    {
+      name: 'Images',
+      description: 'Image upload and management endpoints'
+    }
+  ],
   components: {
     securitySchemes: {
       bearerAuth: {

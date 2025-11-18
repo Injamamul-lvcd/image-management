@@ -3,7 +3,7 @@ export * from './interfaces/User.interface';
 export * from './interfaces/Image.interface';
 
 // DTOs
-export * from './dto/Auth.dto';
+export * from './dto/User.dto';
 export * from './dto/Image.dto';
 
 // Errors

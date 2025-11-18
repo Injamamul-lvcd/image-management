@@ -1,14 +1,14 @@
 import User from '../models/User';
 
 export interface IUserRepository {
-  create(email: string, hashedPassword: string): Promise<User>;
+  create(email: string, hashedPassword: string, fullName: string): Promise<User>;
   findByEmail(email: string): Promise<User | null>;
   findById(id: number): Promise<User | null>;
 }
 
 class UserRepository implements IUserRepository {
-  async create(email: string, hashedPassword: string): Promise<User> {
-    return await User.create({ email, password: hashedPassword });
+  async create(email: string, hashedPassword: string, fullName: string): Promise<User> {
+    return await User.create({ email, password: hashedPassword, fullName });
   }
 
   async findByEmail(email: string): Promise<User | null> {

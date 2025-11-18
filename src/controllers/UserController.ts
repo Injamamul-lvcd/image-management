@@ -1,11 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
-import authService from '../services/AuthService';
-import { AppError } from '../models/errors/AppError';
+import userService from '../services/UserService';
+// import { AppError } from '../models/errors/AppError';
 
-/**
- * Controller for authentication endpoints
- */
-class AuthController {
+
+class UserController {
   /**
    * Register a new user
    * POST /api/auth/register
@@ -15,19 +13,19 @@ class AuthController {
    */
   async register(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const { email, password } = req.body;
+      const { email, password, fullName } = req.body;
 
       // Validate required fields
-      if (!email || !password) {
+      if (!email || !password || !fullName) {
         res.status(400).json({
           success: false,
-          message: 'Email and password are required',
+          message: 'Email, password, and fullName are required',
         });
         return;
       }
 
       // Call service to register user
-      const result = await authService.register(email, password);
+      const result = await userService.register(email, password, fullName);
 
       res.status(201).json({
         success: true,
@@ -46,7 +44,7 @@ class AuthController {
    * @param res - Express response
    * @param next - Express next function for error handling
    */
-  async login(req: Request, res: Response, next: NextFunction): Promise<void> {
+  async login(req: Request, res: Response, _next: NextFunction): Promise<void> {
     try {
       const { email, password } = req.body;
 
@@ -60,7 +58,7 @@ class AuthController {
       }
 
       // Call service to authenticate user
-      const result = await authService.login(email, password);
+      const result = await userService.login(email, password);
       console.log("result --->",result);
       res.status(200).json({
         success: true,
@@ -68,9 +66,9 @@ class AuthController {
         data: result,
       });
     } catch (error) {
-      res.status(500).send({succss: false, message: error.message, data: {}})
+      res.status(500).send({success: false, message:"Internal server error", data: {}})
     }
   }
 }
 
-export default new AuthController();
+export default new UserController();

@@ -20,7 +20,7 @@ interface DecodedToken {
  */
 export function generateToken(userId: number): string {
   const payload: TokenPayload = { userId };
-  return jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
+  return jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN } as any);
 }
 
 /**

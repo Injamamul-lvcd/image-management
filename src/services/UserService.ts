@@ -5,7 +5,7 @@ import { ValidationError, AuthenticationError } from '../models/errors/AppError'
 import { UserDto } from '../models/interfaces/User.interface';
 
 export interface IAuthService {
-  register(email: string, password: string): Promise<{ userId: number }>;
+  register(email: string, password: string, fullName: string): Promise<{ userId: number }>;
   login(email: string, password: string): Promise<{ token: string; user: UserDto }>;
 }
 
@@ -17,7 +17,7 @@ class AuthService implements IAuthService {
    * @returns Object containing the new user ID
    * @throws ValidationError if email is invalid or already exists
    */
-  async register(email: string, password: string): Promise<{ userId: number }> {
+  async register(email: string, password: string, fullName: string): Promise<{ userId: number }> {
     // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
@@ -34,7 +34,7 @@ class AuthService implements IAuthService {
     const hashedPassword = await hashPassword(password);
 
     // Create user
-    const user = await userRepository.create(email, hashedPassword);
+    const user = await userRepository.create(email, hashedPassword, fullName);
 
     return { userId: user.id };
   }
